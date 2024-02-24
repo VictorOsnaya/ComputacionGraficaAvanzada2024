@@ -26,7 +26,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
         "../external/freealut/lib"
         "../external/OpenAL/lib/x64"
     )
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     include_directories(${CMAKE_SOURCE_DIR}/CGALib/include)
 endif()
 
@@ -40,6 +40,11 @@ set_target_properties(02-SkeletonAnimation
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     target_link_libraries(02-SkeletonAnimation opengl32.lib libglfw3dll.dll.a libglew32.dll.a libassimp.dll.a libfreetype.dll.a libalut.dll.a OpenAL32.lib CGALib)
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    target_link_libraries(02-SkeletonAnimation glut glfw GLEW GLU GL freeimage assimp freetype alut openal CGALib)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    LINK_DIRECTORIES(/opt/homebrew/lib)
+    FIND_PACKAGE(ASSIMP REQUIRED)
+    FIND_PACKAGE(Freetype REQUIRED)
+    FIND_PACKAGE(GLEW REQUIRED)
+    FIND_PACKAGE(glfw3 REQUIRED)
+    target_link_libraries(02-SkeletonAnimation glfw "-framework GLUT" "-framework OpenGL" "-framework Cocoa" ${ASSIMP_LIBRARIES} ${FREETYPE_LIBRARIES} GLEW::GLEW CGALib)
 endif()

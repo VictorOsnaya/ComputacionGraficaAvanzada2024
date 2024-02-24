@@ -169,7 +169,9 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint (GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	
 
 	if (bFullScreen)
 		window = glfwCreateWindow(width, height, strTitle.c_str(),
@@ -203,7 +205,7 @@ void init(int width, int height, std::string strTitle, bool bFullScreen) {
 		exit(-1);
 	}
 
-	glViewport(0, 0, screenWidth, screenHeight);
+	glViewport(0, 0, screenWidth * 2, screenHeight * 2);
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 
 	glEnable(GL_DEPTH_TEST);

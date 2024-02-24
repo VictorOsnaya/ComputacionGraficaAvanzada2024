@@ -26,11 +26,12 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
           "../external/FreeImage/lib"
           "../external/glew/lib"
      )
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
      include_directories(
           CGALib 
           "./include/" 
-          "/usr/include/freetype2" 
+          "/opt/homebrew/include/"
+          "/opt/homebrew/include/freetype2"
      )
 endif()
 add_library(CGALib SHARED ${CGALib_SRC})
@@ -40,6 +41,10 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
           RUNTIME_OUTPUT_DIRECTORY "../../bin"
      )
      target_link_libraries(CGALib opengl32.lib libglfw3dll.dll.a libglew32.dll.a libassimp.dll.a libfreetype.dll.a)
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-     target_link_libraries(CGALib glut glfw GLEW GLU GL freeimage assimp freetype)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+     FIND_PACKAGE(ASSIMP REQUIRED)
+     FIND_PACKAGE(Freetype REQUIRED)
+     FIND_PACKAGE(GLEW REQUIRED)
+     LINK_DIRECTORIES(/opt/homebrew/lib)
+     target_link_libraries(CGALib "-framework GLUT" "-framework OpenGL" "-framework Cocoa" ${ASSIMP_LIBRARIES} ${FREETYPE_LIBRARIES} GLEW::GLEW)
 endif()
